@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>windowPostMessage</title>
+</head>
+<body>
+<Button onclick="openSame2()">开启listenDomain2</Button>
+<br/>
+<Button onclick="openOther1()">开启otherListenDomain1</Button>
+<br/>
+<Button onclick="send()">发送</Button>
+</body>
+<script>
+    var domain = 'http://h5d';
+    var listenDomain1 = 'http://h5d/p/postMessage/windowPostMessage1.html';
+    var listenDomain2 = 'http://h5d/p/postMessage/windowPostMessage2.html';
+    var listenDomain3 = 'http://h5d/p/postMessage/windowPostMessage3.html';
+
+    var otherDomain = 'http://localhost';
+    var otherListenDomain1 = 'http://localhost/windowPostMessage2.html';
+
+
+    //chrome:需要开启浏览器允许弹出窗口的设置。中途拦截再确认允许是无效的,targetWindowObj会是undefined
+    var targetWindowObj = null;
+
+    var openSame2 = function(){
+        targetWindowObj = window.open(listenDomain2)
+    };
+    var openOther1 = function(){
+        targetWindowObj = window.open(otherListenDomain1)
+    };
+    var send = function(){
+        if(targetWindowObj){
+            //第二个参数,targetOrigin:目标源的所在域
+            targetWindowObj.postMessage('message from windowPostMessage.html',otherDomain);
+        }
+    };
+
+    window.addEventListener('message', function (e) {
+        console.log(e);
+    });
+</script>
+</html>

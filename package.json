@@ -1,0 +1,9 @@
+{
+    "name": "lostisland",
+    "version": "0.0.1",
+    "dependencies":{
+        "grunt": "~0.4.1",
+        "grunt-zyg-link":"0.1.3",
+        "grunt-contrib-coffee": "x.x.x"
+    }
+}
