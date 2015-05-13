@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>windowPostMessage2</title>
+</head>
+<body>
+</body>
+<script>
+    var listenDomain1 = 'http://h5d/p/postMessage/windowPostMessage1.html';
+    var listenDomain2 = 'http://h5d/p/postMessage/windowPostMessage2.html';
+    var listenDomain3 = 'http://h5d/p/postMessage/windowPostMessage3.html';
+
+    window.addEventListener('message', function (e) {
+        /*
+        e.data 接收的数据
+        e.source 发送源window对象
+        e.origin 发送源的域
+         */
+        console.log(e);
+
+        //发送回去
+        var sourceWindow = e.source;
+        sourceWindow.postMessage('message from windowPostMessage2', e.origin)
+    });
+</script>
+</html>
