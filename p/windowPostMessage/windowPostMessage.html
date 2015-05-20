@@ -10,12 +10,15 @@
 <Button onclick="openOther1()">开启otherListenDomain1</Button>
 <br/>
 <Button onclick="send()">发送</Button>
+<iframe src="windowPostMessage3.html" frameborder="0">
+
+</iframe>
 </body>
 <script>
     var domain = 'http://h5d';
-    var listenDomain1 = 'http://h5d/p/postMessage/windowPostMessage1.html';
-    var listenDomain2 = 'http://h5d/p/postMessage/windowPostMessage2.html';
-    var listenDomain3 = 'http://h5d/p/postMessage/windowPostMessage3.html';
+    var listenDomain1 = 'http://h5d/p/windowPostMessage/windowPostMessage1.html';
+    var listenDomain2 = 'http://h5d/p/windowPostMessage/windowPostMessage2.html';
+    var listenDomain3 = 'http://h5d/p/windowPostMessage/windowPostMessage3.html';
 
     var otherDomain = 'http://localhost';
     var otherListenDomain1 = 'http://localhost/windowPostMessage2.html';
