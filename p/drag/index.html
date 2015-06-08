@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>darg api</title>
+    <style>
+        .red{
+            background-color: red;
+        }
+        .green{
+            background-color: green;
+        }
+        .blue{
+            background-color: blue;
+        }
+        .block{
+            width: 200px;
+            height: 200px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<div draggable="true" class="block red">
+    A
+</div>
+
+<div draggable="true" class="block blue">
+    B
+</div>
+
+<div draggable="true" class="block green">
+    C
+</div>
+</body>
+<script>
+    var events = ['dragstart','dragenter','dragover','dragleave','drag','drop','dragend'];
+    var doms = ['red','blue','green'];
+    var divs = document.querySelectorAll('div');
+    doms.forEach(function(varName,i){
+        window[varName] = divs[i];
+        events.forEach(function(eventName,j){
+            window[varName].addEventListener(eventName,function(){
+                console.log(varName,' ',eventName);
+            });
+        });
+    });
+</script>
+</html>
