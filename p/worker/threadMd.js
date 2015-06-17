@@ -37,6 +37,8 @@ onmessage = function(evt){
         for(var i=0;i<imgMax;i++){
             requestImage(i);
         }
+    }else if(data === 'resource'){
+        postMessage(base64CacheArr);
     }
 }
 

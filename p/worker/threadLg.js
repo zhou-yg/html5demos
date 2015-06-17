@@ -23,7 +23,6 @@ var requestImage = function(i){
             if(xhr.status === 200){
                 var imgBase64 = xhr.responseText;
                 base64CacheArr.push(imgBase64);
-                postMessage(base64CacheArr);
             }
         }else{
         }
@@ -36,5 +35,7 @@ onmessage = function(evt){
         for(var i=0;i<imgMax;i++){
             requestImage(i);
         }
+    }else if(data === 'resource'){
+        postMessage(base64CacheArr);
     }
 }
