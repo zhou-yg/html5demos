@@ -1,13 +1,128 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
+<head>
     <title>worker</title>
+    <meta http-equiv="expires" content="no-cache"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 </head>
+<style type="text/css">
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .container ul{
+        overflow: hidden;
+    }
+    .container li{
+        background-color: #f0f0f0;
+        width: 50vw;
+        height: 50vw;
+        float: left;
+    }
+    .container li img{
+        width: 100%;
+        height: 100%;
+    }
+    Button{
+        width: 100px;
+        height: 40px;
+        line-height: 40px;
+        position: fixed;
+        top: 50px;
+        right: 50px;
+    }
+    input{
+        margin: 5px;
+    }
+    .loadLg,.loadMd{
+        margin: 5px;
+        border: 2px solid #000000;
+        display: inline-block;
+        cursor: pointer;
+    }
+</style>
 <body>
-
+<p>使用worker相当于浏览器为js开辟另外的线程，alert，iOS的滚动都不会阻塞worker线程的运行</p>
+<p>类似nodejs的一个模块，没有dom，全局，弹窗，window,document</p>
+<p><span style="color: green">支持</span> android4.4以上，ios safari 7以上</p>
+<h3>输入加载配置</h3>
+<div>
+    <input type="number" placeholder="加载数量"/><br/>
+    <div class="loadLg">
+         点击加载460K的
+    </div>
+    <div class="loadMd">
+        点击加载100K的
+    </div>
+</div>
+<div class="container">
+    <ul>
+    </ul>
+    <p>正在加载图...</p>
+</div>
+<div id="messages"></div>
 </body>
 <script>
+    var ul = document.querySelector('ul');
 
+    var msgBox = document.getElementById('messages');
+
+
+    var loadLgBtn = document.querySelector('.loadLg');
+    var loadMdBtn = document.querySelector('.loadMd');
+    var inputNum = document.querySelector('input');
+    var thread;
+
+    loadLgBtn.addEventListener('click',function(){
+        thread = new Worker('threadLg.js');
+        load();
+    });
+    loadMdBtn.addEventListener('click',function(){
+        thread = new Worker('threadMd.js');
+        load();
+    });
+
+
+    var load = function(){
+        var currentLoadedNum = countNum = 0;
+
+        var test = function(data){
+            var p = document.createElement('p');
+            p.innerText = (++countNum)+'.成功接收'+data+'的字符';
+            msgBox.appendChild(p);
+        };
+        var load = function(data){
+            var frag = document.createDocumentFragment();
+            for(var i= currentLoadedNum,len=data.length;i<len;i++){
+                var li = document.createElement('li');
+                var img = new Image;
+                img.src = data[i];
+                li.appendChild(img);
+                frag.appendChild(li);
+            }
+            var p = document.createElement('p');
+            p.innerText = '加载'+currentLoadedNum+'张图完毕';
+            frag.appendChild(p);
+
+            ul.appendChild(frag);
+            currentLoadedNum = i;
+            thread.postMessage(currentLoadedNum);
+
+        };
+        thread.postMessage({
+            type:'num',
+            max:inputNum.value
+        })
+        thread.addEventListener('message',function(evt){
+            var data = evt.data;
+            if(data.constructor === Array){
+                load(data);
+            }else{
+                test(data)
+            }
+        });
+    };
 </script>
 </html>
