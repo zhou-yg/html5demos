@@ -9,6 +9,7 @@
 </head>
 <style type="text/css">
     *{
+        list-style: none;
         margin: 0;
         padding: 0;
     }
@@ -36,7 +37,7 @@
     input{
         margin: 5px;
     }
-    .loadLg,.loadMd{
+    .loadLg,.loadLgW,.loadMd{
         margin: 5px;
         border: 2px solid #000000;
         display: inline-block;
@@ -50,18 +51,21 @@
 <Button onclick="alert(1)">zzzz</Button>
 <h3>输入加载配置</h3>
 <div>
-    <input type="number" placeholder="加载数量" value="500"/><br/>
+    <input type="number" placeholder="加载数量" value="200"/><br/>
     <div class="loadLg">
-         点击加载460K的
+        点击加载460K的(image)
+    </div>
+    <div class="loadLgW">
+         点击加载460K的(worker)
     </div>
     <div class="loadMd">
         点击加载100K的
     </div>
 </div>
 <div class="container">
+    <p id="imgBottom">正在加载图...</p>
     <ul>
     </ul>
-    <p>正在加载图...</p>
 </div>
 <div id="messages"></div>
 </body>
@@ -69,24 +73,28 @@
     var ul = document.querySelector('ul');
 
     var msgBox = document.getElementById('messages');
-
+    var imgBottom = document.getElementById('imgBottom');
 
     var loadLgBtn = document.querySelector('.loadLg');
+    var loadLgWBtn = document.querySelector('.loadLgW');
     var loadMdBtn = document.querySelector('.loadMd');
     var inputNum = document.querySelector('input');
     var thread;
 
     loadLgBtn.addEventListener('click',function(){
+        loadImagesStart();
+    });
+    loadLgWBtn.addEventListener('click',function(){
         thread = new Worker('threadLg.js');
-        load();
+        loadStart();
     });
     loadMdBtn.addEventListener('click',function(){
         thread = new Worker('threadMd.js');
-        load();
+        loadStart();
     });
 
 
-    var load = function(){
+    var loadStart = function(){
         var imgMax = inputNum.value;
         var currentLoadedNum = countNum = 0;
 
@@ -95,6 +103,7 @@
             p.innerText = (++countNum)+'.成功接收'+data+'的字符';
             msgBox.appendChild(p);
         };
+
         var load = function(data){
             var i = currentLoadedNum,
                 len=data.length;
@@ -130,7 +139,7 @@
             if(data.constructor === Array){
                 load(data);
             }else{
-                test(data)
+                loadFinish(imgMax,data)
             }
         });
         var getResources = setInterval(function(){
@@ -139,6 +148,48 @@
                 clearInterval(getResources);
             }
         },0);
+    };
+    var loadImagesStart = function(){
+        var imgMax = inputNum.value;
+        var currentLoadedNum = countNum = 0;
+
+
+        var frag = document.createDocumentFragment();
+
+        var startTime = endTime = costTime = 0;
+
+        startTime = +new Date();
+        for(var i= 0;i<imgMax;i++){(function(){
+
+            var img = new Image();
+            img.src = 'example.jpg';
+            img.onload = function(){
+                imgLoadedDone()
+            };
+
+            var li = document.createElement('li');
+            li.appendChild(img);
+            frag.appendChild(li);
+
+            var p = document.createElement('p');
+            currentLoadedNum++;
+            p.innerText = '加载'+currentLoadedNum+'张图完毕';
+            frag.appendChild(p);
+
+        })()}
+        ul.appendChild(frag);
+
+        function imgLoadedDone(){
+            currentLoadedNum++;
+            if(currentLoadedNum>=imgMax){
+                endTime = +new Date();
+                costTime = (endTime-startTime)/1000;
+                loadFinish(imgMax,costTime);
+            }
+        }
+    };
+    var loadFinish = function(imgMax,costTime){
+        imgBottom.innerText = '加载'+ imgMax +'张图片，共耗时:'+costTime+'秒';
     };
 </script>
 </html>
