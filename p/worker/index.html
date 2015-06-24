@@ -37,7 +37,7 @@
     input{
         margin: 5px;
     }
-    .loadLg,.loadLgW,.loadMd{
+    .loadLg,.loadLgW,.loadMd,.loadLgWB{
         margin: 5px;
         border: 2px solid #000000;
         display: inline-block;
@@ -55,8 +55,11 @@
     <div class="loadLg">
         点击加载460K的(image)
     </div>
+    <div class="loadLgWB">
+        点击加载460K的(worker blob)
+    </div>
     <div class="loadLgW">
-         点击加载460K的(worker)
+         点击加载460K的(worker base64)
     </div>
     <div class="loadMd">
         点击加载100K的
@@ -77,12 +80,17 @@
 
     var loadLgBtn = document.querySelector('.loadLg');
     var loadLgWBtn = document.querySelector('.loadLgW');
+    var loadLgWBBtn = document.querySelector('.loadLgWB');
     var loadMdBtn = document.querySelector('.loadMd');
     var inputNum = document.querySelector('input');
     var thread;
 
     loadLgBtn.addEventListener('click',function(){
         loadImagesStart();
+    });
+    loadLgWBBtn.addEventListener('click',function(){
+        thread = new Worker('threadBlob.js');
+        loadStart();
     });
     loadLgWBtn.addEventListener('click',function(){
         thread = new Worker('threadLg.js');
@@ -110,7 +118,7 @@
 
             if(i<len){
                 var frag = document.createDocumentFragment();
-                console.log('before -->',currentLoadedNum);
+                console.log('0000 -->',currentLoadedNum);
                 for(;i<len;i++){
                     var li = document.createElement('li');
                     var img = new Image;
@@ -127,7 +135,7 @@
                 ul.appendChild(frag);
                 thread.postMessage(currentLoadedNum);
 
-                console.log('after <-- ',currentLoadedNum);
+                console.log('1111 <-- ',currentLoadedNum);
             }
         };
         thread.postMessage({
