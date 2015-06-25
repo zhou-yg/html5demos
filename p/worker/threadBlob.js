@@ -17,7 +17,7 @@ var str = '0';
 var requestImage = function(i){
     var xhr = new XMLHttpRequest();
     xhr.overrideMimeType("text/plain; charset=x-user-defined");
-    xhr.responseType = 'arraybuffer';
+    xhr.responseType = 'blob';
     xhr.open('GET',imgSrc);
     xhr.send();
     xhr.onreadystatechange = function(){
