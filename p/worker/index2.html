@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<head>
+    <title>worker</title>
+    <meta http-equiv="expires" content="no-cache"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+<style type="text/css">
+    * {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container ul {
+        overflow: hidden;
+    }
+
+    .container li {
+        background-color: #f0f0f0;
+        width: 50vw;
+        height: 50vw;
+        float: left;
+    }
+
+    .container li img {
+        width: 100%;
+        height: 100%;
+    }
+
+    Button {
+        width: 100px;
+        height: 40px;
+        line-height: 40px;
+        position: fixed;
+        top: 50px;
+        right: 50px;
+    }
+
+    input {
+        margin: 5px;
+    }
+
+    .loadLg, .loadLgW, .loadMd {
+        margin: 5px;
+        border: 2px solid #000000;
+        display: inline-block;
+        cursor: pointer;
+    }
+</style>
+<body>
+<p>使用worker相当于浏览器为js开辟另外的线程，alert，iOS的滚动都不会阻塞worker线程的运行</p>
+
+<p>类似nodejs的一个模块，没有dom，全局，弹窗，window,document</p>
+
+<p><span style="color: green">支持</span> android4.4以上，ios safari 7以上</p>
+<Button onclick="alert(1)">zzzz</Button>
+<h3>输入加载配置</h3>
+
+<div>
+    <input type="number" placeholder="加载数量" value="200"/><br/>
+
+    <div class="loadLg">
+        点击加载460K的(image)
+    </div>
+    <div class="loadLgW">
+        点击加载460K的(worker)
+    </div>
+    <div class="loadMd">
+        点击加载100K的
+    </div>
+</div>
+<div class="container">
+    <p id="imgBottom">正在加载图...</p>
+    <ul>
+    </ul>
+</div>
+<div id="messages"></div>
+</body>
+<script>
+    var imgSrc = 'example.jpg';
+    var imgBlob;
+
+    var arr = [];
+
+    r = new FileReader;
+
+    function req(){
+        var xhr = new XMLHttpRequest();
+        xhr.overrideMimeType("text/plain; charset=x-user-defined");
+        xhr.responseType = 'blob';
+        xhr.open('GET', imgSrc);
+        xhr.send();
+        xhr.onreadystatechange = function () {
+//        postMessage(xhr.readyState);
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    imgBlob = xhr.response;
+                    arr.push(URL.createObjectURL(imgBlob));
+                }
+            } else {
+            }
+        }
+    }
+    req();
+    req();
+
+
+</script>
+</html>
