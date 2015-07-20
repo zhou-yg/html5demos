@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< Updated upstream
 <head>
     <title>worker</title>
     <meta http-equiv="expires" content="no-cache"/>
@@ -7,19 +6,6 @@
     <meta http-equiv="cache-control" content="no-cache"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-=======
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>worker</title>
-    <style>
-        body{
-            width: 100%;
-            height: 1000px;
-        }
-    </style>
->>>>>>> Stashed changes
 </head>
 <style type="text/css">
     *{
@@ -59,7 +45,6 @@
     }
 </style>
 <body>
-<<<<<<< Updated upstream
 <p>使用worker相当于浏览器为js开辟另外的线程，alert，iOS的滚动都不会阻塞worker线程的运行</p>
 <p>类似nodejs的一个模块，没有dom，全局，弹窗，window,document</p>
 <p><span style="color: green">支持</span> android4.4以上，ios safari 7以上</p>
@@ -214,15 +199,5 @@
     var loadFinish = function(imgMax,costTime){
         imgBottom.innerText = '加载'+ imgMax +'张图片，共耗时:'+costTime+'秒';
     };
-=======
-<h1></h1>
-</body>
-<script>
-    var worker = new Worker('thread.js');
-
-    worker.onmessage = function (evt) {
-        document.querySelector('h1').innerText = evt.data;
-    }
->>>>>>> Stashed changes
 </script>
 </html>

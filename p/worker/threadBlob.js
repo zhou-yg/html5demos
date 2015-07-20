@@ -16,7 +16,6 @@ var str = '0';
 
 var requestImage = function(i){
     var xhr = new XMLHttpRequest();
-    xhr.overrideMimeType("text/plain; charset=x-user-defined");
     xhr.responseType = 'blob';
     xhr.open('GET',imgSrc);
     xhr.send();
@@ -26,6 +25,8 @@ var requestImage = function(i){
             if(xhr.status === 200) {
                 var blob = xhr.response;
                 blobCacheArr.push(URL.createObjectURL(blob));
+
+                console.log(blob.size);
 
                 requestCompleteNum++;
                 if(requestCompleteNum>=imgMax){
