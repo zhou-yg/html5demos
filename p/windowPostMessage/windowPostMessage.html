@@ -25,6 +25,7 @@
 
 
     //chrome:需要开启浏览器允许弹出窗口的设置。中途拦截再确认允许是无效的,targetWindowObj会是undefined
+    //或者是从用户行为中发起open行为
     var targetWindowObj = null;
 
     var openSame2 = function(){
@@ -36,7 +37,7 @@
     var send = function(){
         if(targetWindowObj){
             //第二个参数,targetOrigin:目标源的所在域
-            targetWindowObj.postMessage('message from windowPostMessage.html',otherDomain);
+            targetWindowObj.postMessage('message from windowPostMessage.html',domain);
         }
     };
 
